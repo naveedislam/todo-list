@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const sgMail = require("@sendgrid/mail");
 
 module.exports = {
@@ -31,20 +30,6 @@ module.exports = {
       return sgMail.send(mailOptions);
     } catch (err) {
       throw new Error(`${err}`);
-    }
-  },
-
-  //verify token function
-  verifyToken: async (token) => {
-    try {
-      // Verify the token and extract the user ID
-      const decoded = await jwt.verify(token, "secret_key");
-
-      const userId = decoded.userId;
-      return userId;
-    } catch (err) {
-      console.log(err);
-      throw new Error("Token verification failed");
     }
   },
 

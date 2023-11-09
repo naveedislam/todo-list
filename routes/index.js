@@ -1,18 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const authController = require("../controllers/auth.controllers");
-const todoController = require("../controllers/todo.controller");
 
-router.post("/register", authController.register);
-router.post("/login", authController.login);
-router.post("/forgot", authController.forgot);
-router.get("/verify", authController.verify);
+// Middleware
+const verifyToken = require("../middleware");
 
-router.post("/todo", todoController.create);
-router.put("/todo/:id", todoController.updateToDo);
-router.delete("/todo/:id", todoController.deleteToDo);
-router.get("/todo", todoController.getAll);
-router.get("/todo/count", todoController.todosCount);
-router.get("/todo/similar", todoController.similarTasks);
+// Routes
+const todoRoutes = require("./todo.routes");
+const authRoutes = require("./auth.routes");
+
+router.use("/auth", authRoutes);
+router.use("/todos", verifyToken, todoRoutes);
 
 module.exports = router;

@@ -3,16 +3,7 @@ const jwt = require("jsonwebtoken");
 const mysql = require("mysql2/promise");
 
 const utils = require("../utils");
-
-const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.PORT,
-};
-
-
+const dbConfig = require("../config");
 module.exports = {
   register: async (req, res) => {
     const { email, password } = req.body;
@@ -42,8 +33,8 @@ module.exports = {
         );
 
         // Send a verification email
-        const verificationLink = `http://localhost:3005/api/verify?token=${verificationToken}`;
-        await utils.sendVerificationEmail(email, verificationLink);
+        // const verificationLink = `http://localhost:3005/api/auth/verify?token=${verificationToken}`;
+        // await utils.sendVerificationEmail(email, verificationLink);
 
         res.status(201).json({
           message:
@@ -83,7 +74,7 @@ module.exports = {
         }
         // Generate a JWT token
         const userId = rows[0].id;
-        const token = jwt.sign({ userId }, "secret_key", { expiresIn: "1h" });
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
 
         // Insert the token into the tbl_session table
         await connection.execute(
