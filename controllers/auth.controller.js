@@ -33,8 +33,8 @@ module.exports = {
         );
 
         // Send a verification email
-        // const verificationLink = `http://localhost:3005/api/auth/verify?token=${verificationToken}`;
-        // await utils.sendVerificationEmail(email, verificationLink);
+        const verificationLink = `http://localhost:3005/api/auth/verify?token=${verificationToken}`;
+        await utils.sendVerificationEmail(email, verificationLink);
 
         res.status(201).json({
           message:
